@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 
+import { createSubscriber } from '@/lib/prisma-database-service';
+
 const features = [
   {
     title: "Desktop App",
@@ -52,9 +54,21 @@ export default function Home() {
       return;
     }
 
+
+    // Simulate API call
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
+      setMessage(`Welcome aboard! 🎉 We'll keep you in the loop!`);
+    } catch (error) {
+      setIsError(true);
+      setMessage('Something went wrong. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+
+    // Real Prisma API call
+    try {
+      await createSubscriber(email);
       setMessage(`Welcome aboard! 🎉 We'll keep you in the loop!`);
     } catch (error) {
       setIsError(true);
